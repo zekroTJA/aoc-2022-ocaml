@@ -29,3 +29,11 @@ let rec max_in_list list mx =
     | [] -> mx
     | h :: t -> max_in_list t (max h mx)
 ;;
+
+let explode str =
+  let rec exp i res =
+    if i < 0
+      then res
+      else exp (i-1) (str.[i] :: res)
+  in
+    exp (String.length str - 1) [] 
