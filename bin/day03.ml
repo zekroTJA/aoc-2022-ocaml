@@ -12,13 +12,13 @@ let priority v =
 let comp_dupes = function
   | comp_a, comp_b ->
       find_duplicates comp_a comp_b |> List.map priority |> sum_list
-;;
 
-List.map split_half rucksacks |> List.map comp_dupes |> sum_list |> print_int;;
+let () =
+  List.map split_half rucksacks |> List.map comp_dupes |> sum_list |> print_int
 
 (* ------------------------------------------------------------------------------ *)
 
-print_newline ()
+let () = print_newline ()
 
 let rec first_contained_in_all : 'a list list -> 'a option = function
   | [] -> None
@@ -28,8 +28,8 @@ let rec first_contained_in_all : 'a list list -> 'a option = function
       | h :: t ->
           if contained_in_all others h then Some h
           else first_contained_in_all (t :: others))
-;;
 
-group rucksacks 3
-|> List.map first_contained_in_all
-|> List.map Option.get |> List.map priority |> sum_list |> print_int
+let () =
+  group rucksacks 3
+  |> List.map first_contained_in_all
+  |> List.map Option.get |> List.map priority |> sum_list |> print_int

@@ -20,13 +20,12 @@ let score v =
   | 'C', 'Z' -> 3 + 3
   | _ -> raise (Failure "invalid combination")
 
-let lines = read_file_lines "inputs/day02.txt" |> List.map split_space;;
-
-List.map score lines |> sum_list |> print_int;;
+let lines = read_file_lines "inputs/day02.txt" |> List.map split_space
+let () = List.map score lines |> sum_list |> print_int
 
 (* ----------------------------------------------------------------------- *)
 
-print_newline ()
+let () = print_newline ()
 
 let shape v =
   match v with
@@ -40,6 +39,5 @@ let shape v =
   | 'C', 'Y' -> 3 + 3
   | 'C', 'Z' -> 6 + 1
   | _ -> raise (Failure "invalid combination")
-;;
 
-List.map shape lines |> sum_list |> print_int
+let () = List.map shape lines |> sum_list |> print_int
