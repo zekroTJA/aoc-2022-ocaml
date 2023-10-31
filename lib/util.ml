@@ -70,6 +70,13 @@ let contained_in_all lists v =
   in
   contained lists v true
 
+let split_once sep v =
+  let split = String.split_on_char sep v in
+  match split with
+  | [] -> ("", "")
+  | [ a ] -> (a, "")
+  | h :: t -> (h, String.concat (Core.Char.to_string sep) t)
+
 (* ---- TESTS ---------------------------------------------------------------------------------- *)
 
 let%test_unit "take" =
@@ -102,3 +109,15 @@ let%test_unit "contained_in_all" =
   [%test_eq: Base.bool]
     (contained_in_all [ [ 1; 2; 3 ]; [ 2; 4 ]; [ 3; 2; 5 ] ] 3)
     false
+
+let%test_unit "split_once" =
+  [%test_eq: Base.string * Base.string]
+    (split_once ',' "hello,world")
+    ("hello", "world");
+  [%test_eq: Base.string * Base.string]
+    (split_once ',' "helloworld")
+    ("helloworld", "");
+  [%test_eq: Base.string * Base.string]
+    (split_once ',' "hello,world,whats,up")
+    ("hello", "world,whats,up");
+  [%test_eq: Base.string * Base.string] (split_once ',' "") ("", "")

@@ -32,3 +32,7 @@ val group : 'a list -> int -> 'a list list
 val contained_in_all : 'a list list -> 'a -> bool
 (** [contained_in_all lists v] Returns true if [v] is contained in all
     passed [lists].*)
+
+val split_once : char -> string -> string * string
+(** [split_once sep v] Takes a string [v] and splits it once into two strings
+    at character [sep].*)
