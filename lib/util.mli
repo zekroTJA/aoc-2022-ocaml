@@ -36,3 +36,8 @@ val contained_in_all : 'a list list -> 'a -> bool
 val split_once : char -> string -> string * string
 (** [split_once sep v] Takes a string [v] and splits it once into two strings
     at character [sep].*)
+
+val get_idx : 'a list -> int -> 'a
+(** [get_idx list idx] Returns the element at [idx] in the given [list].*)
+
+val flip_matrix : 'a list list -> 'a list list

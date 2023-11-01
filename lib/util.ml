@@ -77,6 +77,31 @@ let split_once sep v =
   | [ a ] -> (a, "")
   | h :: t -> (h, String.concat (Core.Char.to_string sep) t)
 
+let get_idx list idx =
+  let rec get_idx list idx i =
+    match list with
+    | [] -> raise (Failure "invalid idx")
+    | h :: _ when i = idx -> h
+    | _ :: t -> get_idx t idx (i + 1)
+  in
+  get_idx list idx 0
+
+let flip_matrix = function
+  | [] -> []
+  | first :: rest ->
+      let width = List.length first in
+      let rec build_mx j res_mx =
+        if j = width then List.rev res_mx
+        else
+          let rec build_col lines col col_idx i =
+            match lines with
+            | [] -> List.rev col
+            | h :: t -> build_col t (get_idx h col_idx :: col) col_idx (i + 1)
+          in
+          build_mx (j + 1) (build_col (first :: rest) [] j 0 :: res_mx)
+      in
+      build_mx 0 []
+
 (* ---- TESTS ---------------------------------------------------------------------------------- *)
 
 let%test_unit "take" =
@@ -121,3 +146,15 @@ let%test_unit "split_once" =
     (split_once ',' "hello,world,whats,up")
     ("hello", "world,whats,up");
   [%test_eq: Base.string * Base.string] (split_once ',' "") ("", "")
+
+let%test_unit "get_idx" =
+  [%test_eq: Base.int] (get_idx [ 1; 2; 3 ] 1) 2;
+  [%test_eq: Base.int] (get_idx [ 1; 2; 3 ] 0) 1
+
+let%test_unit "flip_matrix" =
+  [%test_eq: Base.int Base.list Base.list]
+    (flip_matrix [ [ 1; 2 ]; [ 3; 4 ] ])
+    [ [ 1; 3 ]; [ 2; 4 ] ];
+  [%test_eq: Base.int Base.list Base.list]
+    (flip_matrix [ [ 1; 2; 3 ]; [ 4; 5; 6 ]; [ 7; 8; 9 ] ])
+    [ [ 1; 4; 7 ]; [ 2; 5; 8 ]; [ 3; 6; 9 ] ]
