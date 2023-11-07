@@ -9,6 +9,17 @@ let read_file_lines file_name =
   in
   build_list []
 
+let read_file file_name =
+  let ic = open_in file_name in
+  let rec read_to_end res =
+    match input_char ic with
+    | c -> read_to_end (c :: res)
+    | exception End_of_file ->
+        close_in ic;
+        List.rev res
+  in
+  read_to_end []
+
 let split_newline list =
   let rec split lines stash result =
     match lines with
@@ -102,6 +113,14 @@ let flip_matrix = function
       in
       build_mx 0 []
 
+let is_all_unique s =
+  let rec aux = function
+    | [] -> true
+    | h :: _ when List.filter (( = ) h) s |> List.length > 1 -> false
+    | _ :: t -> aux t
+  in
+  aux s
+
 (* ---- TESTS ---------------------------------------------------------------------------------- *)
 
 let%test_unit "take" =
@@ -158,3 +177,9 @@ let%test_unit "flip_matrix" =
   [%test_eq: Base.int Base.list Base.list]
     (flip_matrix [ [ 1; 2; 3 ]; [ 4; 5; 6 ]; [ 7; 8; 9 ] ])
     [ [ 1; 4; 7 ]; [ 2; 5; 8 ]; [ 3; 6; 9 ] ]
+
+let%test_unit "is_all_unique" =
+  [%test_eq: Base.bool] (is_all_unique [ 1; 2 ]) true;
+  [%test_eq: Base.bool] (is_all_unique [ 1; 2; 3; 4 ]) true;
+  [%test_eq: Base.bool] (is_all_unique [ 1; 2; 1 ]) false;
+  [%test_eq: Base.bool] (is_all_unique [ 1; 2; 3; 2; 3; 1 ]) false

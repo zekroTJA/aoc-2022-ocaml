@@ -1,6 +1,9 @@
 val read_file_lines : string -> string list
 (** [read_file_lines file_name] Reads contents of file [file_name] and returns the result split by line endings. *)
 
+val read_file : string -> char list
+(** [read_file file_name] Reads all contents of the file [file_name] into a list of characters. *)
+
 val split_newline : string list -> string list list
 (** Takes a list of strings and splits it into sub lists on each empty string value (not including).*)
 
@@ -41,3 +44,9 @@ val get_idx : 'a list -> int -> 'a
 (** [get_idx list idx] Returns the element at [idx] in the given [list].*)
 
 val flip_matrix : 'a list list -> 'a list list
+(** [flip_matrix matrix] Takes a two-dimensional array and creates a new 2d array where all values
+    in each row will be represented in each column. This function requires the arrays in the input
+    array to be all of the same length.*)
+
+val is_all_unique : 'a list -> bool
+(** Returns true when all elements in the passed list are unique in the list. *)
